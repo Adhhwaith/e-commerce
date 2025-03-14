@@ -14,12 +14,12 @@ const Home = () => {
       <HorizontalCardProduct category={"watches"} heading={"Popular's Watches"}/>
 
       <VerticalCardProduct category={"shoes"} heading={"shoes"}/>
-      <VerticalCardProduct category={"Formal footwear"} heading={"formal footwear"}/>
+      <VerticalCardProduct category={"formal"} heading={"formal"}/>
       <VerticalCardProduct category={"Perfume"} heading={"Perfume"}/>
-      <VerticalCardProduct category={"Kids"} heading={"Kids"}/>
-      <VerticalCardProduct category={"Pants"} heading={"Pants"}/>
-      <VerticalCardProduct category={"Women"} heading={"Women"}/>
-      <VerticalCardProduct category={"Beauty"} heading={"Beauty"}/>
+      <VerticalCardProduct category={"kids"} heading={"Kids"}/>
+      <VerticalCardProduct category={"men"} heading={"Men"}/>
+      <VerticalCardProduct category={"women"} heading={"Women"}/>
+      <VerticalCardProduct category={"beauty"} heading={"beauty"}/>
       <VerticalCardProduct category={"trimmers"} heading={"Trimmers"}/>
     </div>
   )
