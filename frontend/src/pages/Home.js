@@ -10,6 +10,7 @@ const Home = () => {
       <CategoryList/>
       <BannerProduct/>
 
+      {/* random commit  */}
       <HorizontalCardProduct category={"shirts"} heading={"shirts"}/>
       <HorizontalCardProduct category={"watches"} heading={"Popular's Watches"}/>
 
