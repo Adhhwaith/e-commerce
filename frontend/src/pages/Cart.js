@@ -3,11 +3,13 @@ import SummaryApi from '../common'
 import Context from '../context'
 import displayINRCurrency from '../helpers/displayCurrency'
 import { MdDelete } from "react-icons/md";
+import { toast } from 'react-toastify';
 
 const Cart = () => {
     const [data,setData] = useState([])
     const [loading,setLoading] = useState(false)
     const context = useContext(Context)
+    const [showQRCode,setShowQRCode] = useState(false)
     const loadingCart = new Array(4).fill(null)
 
 
@@ -23,7 +25,7 @@ const Cart = () => {
        
 
         const responseData = await response.json()
-
+        console.log("priduct>>>",responseData)
         if(responseData.success){
             setData(responseData.data)
         }
@@ -115,6 +117,48 @@ const Cart = () => {
 
     const totalQty = data.reduce((previousValue,currentValue)=> previousValue + currentValue.quantity,0)
     const totalPrice = data.reduce((preve,curr)=> preve + (curr.quantity * curr?.productId?.sellingPrice) ,0)
+
+    const handlePaymentConfirm = async () => {
+        console.log("data>>>",data[0].userId)
+        try {
+            const orderItems = data.map(item => ({
+                productId: item.productId._id,
+                productName: item.productId.productName,
+                productImage: item.productId.productImage[0],
+                quantity: item.quantity,
+                price: item.productId.sellingPrice
+            }))
+            console.log(orderItems)
+            console.log("url>>>",SummaryApi.confirmOrder.url)
+            const response = await fetch(SummaryApi.confirmOrder.url, {
+                method: SummaryApi.confirmOrder.method,
+                credentials: 'include',
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    userId: data[0].userId,
+                    orderItems: orderItems
+                })
+            })
+            console.log(response)
+
+            const responseData = await response.json()
+
+            if(responseData.success) {
+                toast.success("Order confirmed successfully!")
+                setShowQRCode(false)
+                // Clear cart after successful order
+                data.forEach(item => deleteCartProduct(item._id))
+            } else {
+                toast.error(responseData.message || "Failed to confirm order")
+            }
+        } catch (error) {
+            console.error("Error confirming order:", error)
+            toast.error("Failed to confirm order")
+        }
+    }
+
   return (
     <div className='container mx-auto'>
         
@@ -191,12 +235,34 @@ const Cart = () => {
                                         <p>{displayINRCurrency(totalPrice)}</p>    
                                     </div>
 
-                                    <button className='bg-blue-600 p-2 text-white w-full mt-2'>Payment</button>
+                                    <button onClick={()=>{setShowQRCode(true)}} className='bg-blue-600 p-2 text-white w-full mt-2'>Payment</button>
 
                                 </div>
                             )
                         }
                 </div>
+
+                {showQRCode && (
+                    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center' onClick={() => setShowQRCode(false)}>
+                        <div className='bg-white p-4 rounded-lg relative' onClick={(e) => e.stopPropagation()}>
+                            <button 
+                                className='absolute top-2 right-2 text-gray-500 hover:text-gray-700'
+                                onClick={() => setShowQRCode(false)}
+                            >
+                                ✕
+                            </button>
+                            <p className='font-bold'>Pay amount of : {displayINRCurrency(totalPrice)} </p>
+                            <p className='mb-10 mt-1 text-gray-500 w-52 text-sm'>You will recieve confirmation after payment from our team soon</p>
+                            <h2><img src={require('../assest/qr-code.jpg')} alt='qr code' className='w-64 h-64' /></h2>
+                            <button 
+                                className='mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700'
+                                onClick={handlePaymentConfirm}
+                            >
+                                Confirm Payment
+                            </button>
+                        </div>
+                    </div>
+                )}
         </div>
     </div>
   )
