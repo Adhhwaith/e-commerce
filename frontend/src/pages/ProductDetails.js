@@ -17,7 +17,8 @@ const ProductDetails = () => {
     productImage : [],
     description : "",
     price : "",
-    sellingPrice : ""
+    sellingPrice : "",
+    stock : ""
   })
   const params = useParams()
   const [loading,setLoading] = useState(true)
@@ -93,6 +94,12 @@ const ProductDetails = () => {
     navigate("/cart")
 
   }
+
+  const getStockStatus = (stock) => {
+    if (stock <= null) return { text: 'Out of Stock', color: 'text-red-600 bg-red-100' };
+    if (stock <= 10) return { text: 'Low Stock', color: 'text-orange-600 bg-orange-100' };
+    return { text: 'In Stock', color: 'text-green-600 bg-green-100' };
+  };
 
   return (
     <div className='container mx-auto p-4'>
@@ -203,9 +210,31 @@ const ProductDetails = () => {
                   <p className='text-slate-400 line-through'>{displayINRCurrency(data.price)}</p>
                 </div>
 
+                {/* Stock Status Display */}
+                <div className='flex items-center gap-2 my-1'>
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStockStatus(data.stock).color}`}>
+                    {getStockStatus(data.stock).text}
+                  </span>
+                  <span className='text-gray-600'>
+                    {data.stock > 0 && `(${data.stock} units available)`}
+                  </span>
+                </div>
+
                 <div className='flex items-center gap-3 my-2'>
-                  <button className='border-2 border-red-600 rounded px-3 py-1 min-w-[120px] text-red-600 font-medium hover:bg-red-600 hover:text-white' onClick={(e)=>handleBuyProduct(e,data?._id)}>Buy</button>
-                  <button className='border-2 border-red-600 rounded px-3 py-1 min-w-[120px] font-medium text-white bg-red-600 hover:text-red-600 hover:bg-white' onClick={(e)=>handleAddToCart(e,data?._id)}>Add To Cart</button>
+                  <button 
+                    className={`border-2 border-red-600 rounded px-3 py-1 min-w-[120px] text-red-600 font-medium hover:bg-red-600 hover:text-white ${data.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                    onClick={(e) => handleBuyProduct(e, data?._id)}
+                    disabled={data.stock <= 0}
+                  >
+                    Buy
+                  </button>
+                  <button 
+                    className={`border-2 border-red-600 rounded px-3 py-1 min-w-[120px] font-medium text-white bg-red-600 hover:text-red-600 hover:bg-white ${data.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                    onClick={(e) => handleAddToCart(e, data?._id)}
+                    disabled={data.stock <= 0}
+                  >
+                    Add To Cart
+                  </button>
                 </div>
 
                 <div>
