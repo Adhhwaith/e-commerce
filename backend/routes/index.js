@@ -22,7 +22,7 @@ const updateAddToCartProduct = require('../controller/user/updateAddToCartProduc
 const deleteAddToCartProduct = require('../controller/user/deleteAddToCartProduct')
 const searchProduct = require('../controller/product/searchProduct')
 const filterProductController = require('../controller/product/filterProduct')
-
+const orderConfirmed = require('../controller/user/orderComfirmed')
 
 
 router.post("/signup",userSignUpController)
@@ -51,6 +51,8 @@ router.get("/view-card-product",authToken,addToCartViewProduct)
 router.post("/update-cart-product",authToken,updateAddToCartProduct)
 router.post("/delete-cart-product",authToken,deleteAddToCartProduct)
 
+//order confirmed
+router.post("/order-confirmed",authToken,orderConfirmed)
 
 
 

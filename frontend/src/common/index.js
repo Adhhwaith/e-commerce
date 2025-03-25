@@ -76,6 +76,10 @@ const SummaryApi = {
     filterProduct : {
         url : `${backendDomin}/api/filter-product`,
         method : 'post'
+    },
+    confirmOrder: {
+        url: `${backendDomin}/api/order-confirmed`,
+        method: "post"
     }
 }
 
