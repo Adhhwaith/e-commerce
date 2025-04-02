@@ -23,6 +23,8 @@ const deleteAddToCartProduct = require('../controller/user/deleteAddToCartProduc
 const searchProduct = require('../controller/product/searchProduct')
 const filterProductController = require('../controller/product/filterProduct')
 const orderConfirmed = require('../controller/user/orderComfirmed')
+const AdminsignUp = require('../controller/admin/adminSignUp')
+const adminSignin = require('../controller/admin/adminSignIn')
 
 
 router.post("/signup",userSignUpController)
@@ -53,6 +55,11 @@ router.post("/delete-cart-product",authToken,deleteAddToCartProduct)
 
 //order confirmed
 router.post("/order-confirmed",authToken,orderConfirmed)
+
+
+// admin 
+router.post("/adminsignIn",adminSignin)
+router.post("/adminsignup",AdminsignUp)
 
 
 
