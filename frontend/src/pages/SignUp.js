@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 const SignUp = () => {
   const [showPassword,setShowPassword] = useState(false)
   const [showConfirmPassword,setShowConfirmPassword] = useState(false)
+  const [passwordError, setPasswordError] = useState('')
   const [data,setData] = useState({
       email : "",
       password : "",
@@ -18,6 +19,16 @@ const SignUp = () => {
       profilePic : "",
   })
   const navigate = useNavigate()
+
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long";
+    }
+    if (!/\d/.test(password)) {
+      return "Password must contain at least one number";
+    }
+    return "";
+  }
 
   const handleOnChange = (e) =>{
       const { name , value } = e.target
@@ -28,6 +39,10 @@ const SignUp = () => {
               [name] : value
           }
       })
+
+      if (name === 'password') {
+        setPasswordError(validatePassword(value));
+      }
   }
 
   const handleUploadPic = async(e) =>{
@@ -41,15 +56,18 @@ const SignUp = () => {
         profilePic : imagePic
       }
     })
-
   }
-
 
   const handleSubmit = async(e) =>{
       e.preventDefault()
 
-      if(data.password === data.confirmPassword){
+      const passwordValidationError = validatePassword(data.password);
+      if (passwordValidationError) {
+        toast.error(passwordValidationError);
+        return;
+      }
 
+      if(data.password === data.confirmPassword){
         const dataResponse = await fetch(SummaryApi.signUP.url,{
             method : SummaryApi.signUP.method,
             headers : {
@@ -72,7 +90,6 @@ const SignUp = () => {
       }else{
         toast.error("Please check password and confirm password")
       }
-
   }
 
   return (
@@ -136,18 +153,16 @@ const SignUp = () => {
                                     className='w-full h-full outline-none bg-transparent'/>
                                 <div className='cursor-pointer text-xl' onClick={()=>setShowPassword((preve)=>!preve)}>
                                     <span>
-                                        {
-                                            showPassword ? (
-                                                <FaEyeSlash/>
-                                            )
-                                            :
-                                            (
-                                                <FaEye/>
-                                            )
-                                        }
+                                        {showPassword ? <FaEyeSlash/> : <FaEye/>}
                                     </span>
                                 </div>
                             </div>
+                            {passwordError && (
+                                <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+                            )}
+                            {data.password && !passwordError && (
+                                <p className="text-green-500 text-sm mt-1">Password meets requirements</p>
+                            )}
                         </div>
 
                         <div>
@@ -161,24 +176,20 @@ const SignUp = () => {
                                     onChange={handleOnChange}
                                     required
                                     className='w-full h-full outline-none bg-transparent'/>
-
                                 <div className='cursor-pointer text-xl' onClick={()=>setShowConfirmPassword((preve)=>!preve)}>
                                     <span>
-                                        {
-                                            showConfirmPassword ? (
-                                                <FaEyeSlash/>
-                                            )
-                                            :
-                                            (
-                                                <FaEye/>
-                                            )
-                                        }
+                                        {showConfirmPassword ? <FaEyeSlash/> : <FaEye/>}
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        <button className='bg-red-600 hover:bg-red-700 text-white px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-110 transition-all mx-auto block mt-6'>Sign Up</button>
+                        <button 
+                            className='bg-red-600 hover:bg-red-700 text-white px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-110 transition-all mx-auto block mt-6'
+                            disabled={!!passwordError}
+                        >
+                            Sign Up
+                        </button>
 
                     </form>
 
