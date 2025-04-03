@@ -8,6 +8,8 @@ import { MdDelete } from "react-icons/md";
 import SummaryApi from '../common';
 import {toast} from 'react-toastify'
 
+
+
 const AdminEditProduct = ({
     onClose,
     productData,
@@ -22,7 +24,8 @@ const AdminEditProduct = ({
     productImage : productData?.productImage || [],
     description : productData?.description,
     price : productData?.price,
-    sellingPrice : productData?.sellingPrice
+    sellingPrice : productData?.sellingPrice,
+    stock: productData?.stock || 0
   })
   const [openFullScreenImage,setOpenFullScreenImage] = useState(false)
   const [fullScreenImage,setFullScreenImage] = useState("")
@@ -213,6 +216,19 @@ const AdminEditProduct = ({
              onChange={handleOnChange}
              className='p-2 bg-slate-100 border rounded'
              required
+           />
+
+           <label htmlFor='stock' className='mt-3'>Stock :</label>
+           <input 
+             type='number' 
+             id='stock' 
+             placeholder='enter stock quantity' 
+             value={data.stock} 
+             name='stock'
+             onChange={handleOnChange}
+             className='p-2 bg-slate-100 border rounded'
+             required
+             min="0"
            />
 
            <label htmlFor='description' className='mt-3'>Description :</label>
