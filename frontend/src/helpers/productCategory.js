@@ -1,10 +1,10 @@
 const productCategory = [
-    { id : 1, label : "shirts", value : "shirts"},
-    { id : 2, label : "Popular's Watches", value : "Popular's Watches"},
-    { id : 3, label : "shoes", value : "shoes"},
-    { id : 4, label : "formal footwear", value : "formal footwear"},
-    { id : 5, label : "Perfume", value : "Perfume"},
-    { id : 6, label : "Pants", value : "Pants"},
+    { id : 1, label : "men", value : "men"},
+    { id : 2, label : "women", value : "women"},
+    { id : 3, label : "kids", value : "kids"},
+    { id : 4, label : "beauty", value : "beauty"},
+    { id : 5, label : "shoe", value : "shoe"},
+    { id : 6, label : "accessories", value : "accessories"},
    
 ]
 
