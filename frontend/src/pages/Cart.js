@@ -128,7 +128,7 @@ const Cart = () => {
                 quantity: item.quantity,
                 price: item.productId.sellingPrice
             }))
-            console.log(orderItems)
+            // console.log(orderItems)
             console.log("url>>>",SummaryApi.confirmOrder.url)
             const response = await fetch(SummaryApi.confirmOrder.url, {
                 method: SummaryApi.confirmOrder.method,
@@ -141,7 +141,7 @@ const Cart = () => {
                     orderItems: orderItems
                 })
             })
-            console.log(response)
+            // console.log(response)
 
             const responseData = await response.json()
 

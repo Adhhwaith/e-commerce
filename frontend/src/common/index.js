@@ -80,6 +80,10 @@ const SummaryApi = {
     confirmOrder: {
         url: `${backendDomin}/api/order-confirmed`,
         method: "post"
+    },
+    allOrders: {
+        url: `${backendDomin}/api/all-orders`,
+        method: "get"
     }
 }
 

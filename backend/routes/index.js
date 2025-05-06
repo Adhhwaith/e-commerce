@@ -25,6 +25,8 @@ const filterProductController = require('../controller/product/filterProduct')
 const orderConfirmed = require('../controller/user/orderComfirmed')
 const adminSignUpController = require('../controller/admin/adminSignUp')
 const adminSignInController = require('../controller/admin/adminSignIn')
+const adminViewOrdersController = require('../controller/admin/viewOrders')
+const adminOrdersController = require('../controller/admin/viewOrders')
 
 
 router.post("/signup",userSignUpController)
@@ -35,6 +37,7 @@ router.get("/userLogout",userLogout)
 //admin panel 
 router.get("/all-user",authToken,allUsers)
 router.post("/update-user",authToken,updateUser)
+router.get("/all-orders",authToken,adminViewOrdersController)
 
 //product
 router.post("/upload-product",authToken,UploadProductController)
@@ -56,6 +59,8 @@ router.post("/delete-cart-product",authToken,deleteAddToCartProduct)
 //order confirmed
 router.post("/order-confirmed",authToken,orderConfirmed)
 
+//admin orders
+router.get("/all-orders",authToken,adminOrdersController)
 
 // admin 
 router.post("/admin/signin",adminSignInController)
